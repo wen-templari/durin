@@ -25,7 +25,7 @@ func Message(c *gin.Context) {
 	conn := util.Pool.Get()
 	defer conn.Close()
 
-	i, err := conn.Do("EXISTS", "user:"+id)
+	i, err := conn.Do("EXISTS", id)
 	if err != nil {
 		log.Println(err)
 	}
@@ -33,7 +33,7 @@ func Message(c *gin.Context) {
 		c.JSON(200, util.NewReturnObject(400, "id is not exist", nil))
 		return
 	}
-	tokenGet, err := redis.String(conn.Do("get", "user:token:"+id))
+	tokenGet, err := redis.String(conn.Do("get", "token:"+id))
 	if err != nil {
 		log.Println(err)
 		c.JSON(200, util.NewReturnObject(500, "server error", nil))

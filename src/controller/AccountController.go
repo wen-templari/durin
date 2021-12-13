@@ -20,7 +20,7 @@ func Login(c *gin.Context) {
 	conn := util.Pool.Get()
 	defer conn.Close()
 
-	i, err := conn.Do("EXISTS", "user:"+account.Id)
+	i, err := conn.Do("EXISTS", account.Id)
 	if err != nil {
 		log.Println(err)
 	}
@@ -29,7 +29,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	n, err := redis.Values(conn.Do("hgetall", "user:"+account.Id))
+	n, err := redis.Values(conn.Do("hgetall", account.Id))
 	if err != nil {
 		log.Println(err)
 		c.JSON(200, util.NewReturnObject(500, "server error", nil))
@@ -49,8 +49,8 @@ func Login(c *gin.Context) {
 	token := util.GenerateToken()
 	former, _ := c.Cookie("token")
 	log.Println(former)
-	conn.Do("set", "user:token:"+account.Id, token)
-	conn.Do("expire", "user:token:"+account.Id, 43200)
+	conn.Do("set", "token:"+account.Id, token)
+	conn.Do("expire", "token:"+account.Id, 43200)
 	c.SetCookie("token", token, 3600, "/", "", false, false)
 
 	//TODO return stashed message
@@ -60,7 +60,32 @@ func Login(c *gin.Context) {
 
 func Register(c *gin.Context) {
 	var account model.Account
-	if c.ShouldBind(&account) == nil {
-		log.Printf(account.Name)
+	err := c.ShouldBind(&account)
+
+	if err != nil {
+		log.Println(err)
+		return
 	}
+
+	if account.Name == "" || account.Password == "" {
+		c.JSON(200, util.NewReturnObject(400, "name or password is empty", nil))
+		return
+	}
+
+	conn := util.Pool.Get()
+	defer conn.Close()
+
+	// self increase id
+	id, err := conn.Do("incr", "idCounter")
+	if err != nil {
+		log.Println(err)
+	}
+
+	conn.Do("hmset", id, "id", id, "name", account.Name, "password", account.Password)
+
+	c.JSON(200, util.NewReturnObject(200, "register success", nil))
+
+}
+
+func Logout(c *gin.Context) {
 }

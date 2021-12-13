@@ -15,6 +15,7 @@ func main() {
 	bindAddress := "localhost:8080"
 	r := gin.Default()
 	r.POST("/login", controller.Login)
+	r.POST("/register", controller.Register)
 	r.GET("/message", controller.Message)
 	r.Run(bindAddress)
 }
