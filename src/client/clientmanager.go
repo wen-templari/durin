@@ -39,6 +39,7 @@ func (manager *ClientManager) Run() {
 		case message := <-manager.Send:
 			// err := ConnectionMap[message.To].Conn.WriteJSON(message)
 			if manager.Clients[message.To] != nil {
+				log.Printf("Send message to %s\n", message.To)
 				manager.Clients[message.To].send <- message
 			}
 		}

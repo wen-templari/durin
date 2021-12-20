@@ -84,8 +84,29 @@ func Register(c *gin.Context) {
 	conn.Do("hmset", id, "id", id, "name", account.Name, "password", account.Password)
 
 	c.JSON(200, util.NewReturnObject(200, "register success", nil))
-
 }
 
 func Logout(c *gin.Context) {
+}
+
+func Search(c *gin.Context) {
+	id, _ := c.GetQuery("id")
+	conn := util.Pool.Get()
+	defer conn.Close()
+
+	n, err := redis.Values(conn.Do("hgetall", id))
+	if err != nil {
+		log.Println(err)
+		c.JSON(200, util.NewReturnObject(500, "server error", nil))
+		return
+	}
+
+	var dbResult model.AccountDTO
+	err = redis.ScanStruct(n, &dbResult)
+	if err != nil {
+		log.Println(err)
+	}
+
+	c.JSON(200, util.NewReturnObject(200, "success", dbResult))
+
 }

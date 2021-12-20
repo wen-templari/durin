@@ -16,6 +16,7 @@ func main() {
 	r := gin.Default()
 	r.POST("/login", controller.Login)
 	r.POST("/register", controller.Register)
+	r.GET("/search", controller.Search)
 	r.GET("/message", controller.Message)
 	r.Run(bindAddress)
 }

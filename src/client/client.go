@@ -25,6 +25,7 @@ func (c *Client) write() {
 		if err != nil {
 			break
 		}
+		log.Println("Send message to ", c.Id)
 	}
 }
 
