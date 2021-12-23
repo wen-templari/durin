@@ -39,6 +39,7 @@ func (c *Client) read() {
 			break
 		}
 		err = json.NewDecoder(r).Decode(&message)
+		log.Println(message)
 		if err != nil {
 			log.Println(err)
 		} else {

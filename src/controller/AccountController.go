@@ -54,8 +54,13 @@ func Login(c *gin.Context) {
 	c.SetCookie("token", token, 3600, "/", "", false, false)
 
 	//TODO return stashed message
+	accountDTO := model.AccountDTO{
+		Id:    account.Id,
+		Name:  account.Name,
+		Token: token,
+	}
 
-	c.JSON(200, util.NewReturnObject(200, "login success", dbResult))
+	c.JSON(200, util.NewReturnObject(200, "login success", accountDTO))
 }
 
 func Register(c *gin.Context) {

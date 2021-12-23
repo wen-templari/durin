@@ -25,6 +25,8 @@ func Message(c *gin.Context) {
 	conn := util.Pool.Get()
 	defer conn.Close()
 
+	log.Println(id)
+
 	i, err := conn.Do("EXISTS", id)
 	if err != nil {
 		log.Println(err)
@@ -45,7 +47,7 @@ func Message(c *gin.Context) {
 	// 	return
 	// }
 
-	tokenSend, _ := c.Cookie("token")
+	tokenSend, _ := c.GetQuery("token")
 	if tokenSend == "" {
 		c.JSON(200, util.NewReturnObject(400, "token is not exist", nil))
 		return
