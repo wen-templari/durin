@@ -2,13 +2,13 @@
 + [x] **redis**/mongodb?
 + [ ] login
   + [x] **http**/websocket?
-  + [ ] token=> cookie?
+  + [x] **token**=> cookie?
 + [x] primary key 
   +  self increase id
   +  given after reigster
   +  allow duplicate namme
-+ [ ] **search by user name ?????**
-+ [ ] message
++ [x] ~~**search by user name ?????**~~
++ [x] message
   ``` json
   {
     from:"sender",
@@ -17,10 +17,10 @@
     time:"",
   }
   ```
-+ [ ] auth middleware
-+ [ ] return object
++ [x] ~~auth middleware~~
++ [x] return object
   + resultCode guildline
-+ [ ] API Doc
++ [x] API Doc
   + [ ] login
   + [ ] logout
   + [ ] register
