@@ -3,6 +3,8 @@ package controller
 import (
 	"durin/src/model"
 	"durin/src/util"
+	"encoding/json"
+	"fmt"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -53,11 +55,27 @@ func Login(c *gin.Context) {
 	conn.Do("expire", "token:"+account.Id, 43200)
 	c.SetCookie("token", token, 3600, "/", "", false, false)
 
-	//TODO return stashed message
+	offlineMessageString, _ := redis.Strings(conn.Do("lrange", "stashed:"+account.Id, 0, -1))
+	if len(offlineMessageString) > 0 {
+		conn.Do("del", "stashed:"+account.Id)
+	}
+	offlineMessage := []model.Message{}
+	for _, v := range offlineMessageString {
+		temp := model.Message{}
+		err := json.Unmarshal([]byte(v), &temp)
+		if err != nil {
+			log.Println(err)
+		}
+		offlineMessage = append(offlineMessage, temp)
+	}
+
+	fmt.Println(offlineMessage)
+
 	accountDTO := model.AccountDTO{
-		Id:    account.Id,
-		Name:  account.Name,
-		Token: token,
+		Id:             dbResult.Id,
+		Name:           dbResult.Name,
+		Token:          token,
+		OfflineMessage: offlineMessage,
 	}
 
 	c.JSON(200, util.NewReturnObject(200, "login success", accountDTO))

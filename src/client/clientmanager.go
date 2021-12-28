@@ -2,6 +2,8 @@ package client
 
 import (
 	"durin/src/model"
+	"durin/src/util"
+	"encoding/json"
 	"log"
 )
 
@@ -29,18 +31,24 @@ func (manager *ClientManager) Run() {
 				manager.Clients[client.Id] = client
 				log.Printf("Added new client %s\n", client.Id)
 			} else {
-				log.Println("Client already exist")
+				manager.Clients[client.Id].conn = client.conn
+				log.Println("Client already exist, updating conn")
 			}
 		case id := <-manager.Unregister:
 			if _, ok := manager.Clients[id]; ok {
+				log.Printf("Removed client %s\n", id)
 				close(manager.Clients[id].send)
 				delete(manager.Clients, id)
 			}
 		case message := <-manager.Send:
-			// err := ConnectionMap[message.To].Conn.WriteJSON(message)
 			if manager.Clients[message.To] != nil {
-				log.Printf("Send message to %s\n", message.To)
 				manager.Clients[message.To].send <- message
+			} else {
+				conn := util.Pool.Get()
+				log.Printf("Client %s not found\n", message)
+				messageStr, _ := json.Marshal(message)
+				conn.Do("RPUSH", "stashed:"+message.To, messageStr)
+				conn.Close()
 			}
 		}
 	}
