@@ -4,18 +4,21 @@ import (
 	"durin/src/model"
 	"encoding/json"
 	"log"
+	"sync"
+	"time"
 
 	"github.com/gorilla/websocket"
 )
 
 type Client struct {
+	mu      sync.Mutex
 	Id      string
 	conn    *websocket.Conn
 	send    chan model.Message
 	manager *ClientManager
-}
 
-// var ConnectionMap map[string]*Client = make(map[string]*Client)
+	resetHeartbeatTimer bool
+}
 
 func (c *Client) write() {
 	defer c.close()
@@ -39,19 +42,38 @@ func (c *Client) read() {
 			break
 		}
 		err = json.NewDecoder(r).Decode(&message)
-		log.Println(message)
 		if err != nil {
 			log.Println(err)
 		} else {
-			c.manager.Send <- message
+			if message.To == "heartbeat" {
+				c.resetHeartbeatTimer = true
+			} else {
+				c.manager.Send <- message
+			}
 		}
 	}
+}
+
+func (c *Client) heartbeatTimer() {
+	fragmentCount := 600
+	unregisterTime := 5000
+	for i := 0; i < fragmentCount; i++ {
+		c.mu.Lock()
+		if c.resetHeartbeatTimer {
+			c.resetHeartbeatTimer = false
+			i = 0
+			c.mu.Unlock()
+			continue
+		}
+		c.mu.Unlock()
+		time.Sleep(time.Duration(unregisterTime/fragmentCount) * time.Millisecond)
+	}
+	c.close()
 }
 func (c *Client) close() {
 	c.manager.Unregister <- c.Id
 	c.conn.Close()
 }
-
 func SaveClient(id string, conn *websocket.Conn) int {
 	_, ok := Manager.Clients[id]
 	if ok {
@@ -59,10 +81,19 @@ func SaveClient(id string, conn *websocket.Conn) int {
 
 	} else {
 		log.Println("Client added")
-		c := &Client{id, conn, make(chan model.Message), &Manager}
+		// c := &Client{id, conn, make(chan model.Message), &Manager}
+		c := &Client{
+			Id:      id,
+			conn:    conn,
+			send:    make(chan model.Message),
+			manager: &Manager,
+
+			resetHeartbeatTimer: false,
+		}
 		Manager.Register <- c
 		go c.write()
 		go c.read()
+		go c.heartbeatTimer()
 	}
 	return 0
 }
