@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gomodule/redigo/redis"
@@ -105,8 +106,14 @@ func Register(c *gin.Context) {
 	}
 
 	conn.Do("hmset", id, "id", id, "name", account.Name, "password", account.Password)
+	log.Println(id.(int64))
+	strId := strconv.FormatInt(id.(int64), 10)
+	accountDTO := model.AccountDTO{
+		Id:   strId,
+		Name: account.Name,
+	}
 
-	c.JSON(200, util.NewReturnObject(200, "register success", nil))
+	c.JSON(200, util.NewReturnObject(200, "register success", accountDTO))
 }
 
 func Logout(c *gin.Context) {
