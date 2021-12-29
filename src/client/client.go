@@ -24,11 +24,15 @@ func (c *Client) write() {
 	defer c.close()
 	for {
 		message := <-c.send
+		log.Println(message)
+		if len(message.From) == 0 {
+			break
+		}
 		err := c.conn.WriteJSON(message)
 		if err != nil {
 			break
 		}
-		log.Println("Send message to ", c.Id)
+		// log.Println("Send message to ", c.Id)
 	}
 }
 
@@ -45,6 +49,7 @@ func (c *Client) read() {
 		if err != nil {
 			log.Println(err)
 		} else {
+			// log.Println(message)
 			if message.To == "heartbeat" {
 				c.resetHeartbeatTimer = true
 			} else {

@@ -12,7 +12,7 @@ func main() {
 
 	util.InitPool()
 	go client.Manager.Run()
-	bindAddress := "localhost:8080"
+	bindAddress := "localhost:23213"
 	r := gin.Default()
 	r.POST("/user", controller.Register)
 	r.GET("/user", controller.Search)
