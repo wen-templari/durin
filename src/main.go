@@ -14,9 +14,11 @@ func main() {
 	go client.Manager.Run()
 	bindAddress := "localhost:8080"
 	r := gin.Default()
-	r.POST("/login", controller.Login)
-	r.POST("/register", controller.Register)
-	r.GET("/search", controller.Search)
+	r.POST("/user", controller.Register)
+	r.GET("/user", controller.Search)
+	r.POST("/user/login", controller.Login)
+	r.POST("/user/:id/avatar", controller.SetAvatar)
 	r.GET("/message", controller.Message)
+	r.POST("/file", controller.File)
 	r.Run(bindAddress)
 }

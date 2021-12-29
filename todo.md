@@ -20,6 +20,12 @@
 + [x] ~~auth middleware~~
 + [x] return object
   + resultCode guildline
++ [ ] avatar
++ [ ] message type
+  + [ ] plain
+  + [ ] img
++ [ ] account setting
+  + [ ] change name/password
 + [x] API Doc
   + [ ] login
   + [ ] logout

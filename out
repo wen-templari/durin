@@ -1,0 +1,40 @@
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] POST   /login                    --> durin/src/controller.Login (3 handlers)
+[GIN-debug] POST   /register                 --> durin/src/controller.Register (3 handlers)
+[GIN-debug] GET    /search                   --> durin/src/controller.Search (3 handlers)
+[GIN-debug] GET    /message                  --> durin/src/controller.Message (3 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on localhost:8080
+[]
+[GIN] 2021/12/29 - 11:59:20 | 200 |     8.56461ms |       127.0.0.1 | POST     "/login"
+[GIN] 2021/12/29 - 11:59:20 | 200 |    3.273473ms |       127.0.0.1 | GET      "/message?id=123&token=a83bfcb902415ffe20bc1c0c13f5e6ff"
+[]
+[GIN] 2021/12/29 - 11:59:25 | 200 |    6.777006ms |       127.0.0.1 | POST     "/login"
+[GIN] 2021/12/29 - 11:59:25 | 200 |    4.694269ms |       127.0.0.1 | GET      "/message?id=233&token=312b3b229e6456cdc95703ca5f0acbdf"
+[]
+[GIN] 2021/12/29 - 11:59:30 | 200 |      7.6435ms |       127.0.0.1 | POST     "/login"
+[GIN] 2021/12/29 - 11:59:30 | 200 |    3.793817ms |       127.0.0.1 | GET      "/message?id=123&token=930d7c6bc6c8e5cb94d185a09ccdd301"
+[]
+[GIN] 2021/12/29 - 11:59:33 | 200 |    8.039496ms |       127.0.0.1 | POST     "/login"
+[GIN] 2021/12/29 - 11:59:33 | 200 |    3.417226ms |       127.0.0.1 | GET      "/message?id=233&token=076e6b0faaec69a640970e3f7de1d1ea"
+[]
+[GIN] 2021/12/29 - 11:59:36 | 200 |    7.469279ms |       127.0.0.1 | POST     "/login"
+[GIN] 2021/12/29 - 11:59:36 | 200 |    3.641287ms |       127.0.0.1 | GET      "/message?id=123&token=997d4218f9640e260fdf73f719242e47"
+[]
+[GIN] 2021/12/29 - 11:59:40 | 200 |    6.255661ms |       127.0.0.1 | POST     "/login"
+[GIN] 2021/12/29 - 11:59:40 | 200 |    4.049298ms |       127.0.0.1 | GET      "/message?id=233&token=3086cc7db6e6805298c927f2c34224f3"
+[]
+[GIN] 2021/12/29 - 11:59:43 | 200 |  111.755757ms |       127.0.0.1 | POST     "/login"
+[GIN] 2021/12/29 - 11:59:43 | 200 |    4.681955ms |       127.0.0.1 | GET      "/message?id=123&token=165fd73d908f1b48e1b38440b44f4870"
+[]
+[GIN] 2021/12/29 - 11:59:46 | 200 |     8.97618ms |       127.0.0.1 | POST     "/login"
+[GIN] 2021/12/29 - 11:59:46 | 200 |    3.635717ms |       127.0.0.1 | GET      "/message?id=123&token=83c9fccd1635f333d9dca60448b9b2d6"
+[]
+[GIN] 2021/12/29 - 11:59:49 | 200 |    6.899399ms |       127.0.0.1 | POST     "/login"
+[GIN] 2021/12/29 - 11:59:49 | 200 |    3.580543ms |       127.0.0.1 | GET      "/message?id=233&token=5b75735e9c1b81442fafb7cf06e054ec"

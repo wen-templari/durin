@@ -16,7 +16,7 @@ func Login(c *gin.Context) {
 	var account model.Account = model.Account{}
 	c.ShouldBind(&account)
 	if account.Id == "" || account.Password == "" {
-		c.JSON(200, util.NewReturnObject(400, "id or password is empty", nil))
+		c.JSON(200, util.NewReturnObject(1201, "id or password is empty", nil))
 		return
 	}
 
@@ -28,7 +28,7 @@ func Login(c *gin.Context) {
 		log.Println(err)
 	}
 	if i.(int64) == 0 {
-		c.JSON(200, util.NewReturnObject(400, "id is not exist", nil))
+		c.JSON(200, util.NewReturnObject(1401, "id is not exist", nil))
 		return
 	}
 
@@ -45,7 +45,7 @@ func Login(c *gin.Context) {
 		log.Println(err)
 	}
 	if dbResult.Password != account.Password {
-		c.JSON(200, util.NewReturnObject(400, "wrong password", nil))
+		c.JSON(200, util.NewReturnObject(1301, "wrong password", nil))
 		return
 	}
 
@@ -75,11 +75,12 @@ func Login(c *gin.Context) {
 	accountDTO := model.AccountDTO{
 		Id:             dbResult.Id,
 		Name:           dbResult.Name,
+		Avatar:         dbResult.Avatar,
 		Token:          token,
 		OfflineMessage: offlineMessage,
 	}
 
-	c.JSON(200, util.NewReturnObject(200, "login success", accountDTO))
+	c.JSON(200, util.NewReturnObject(0, "login success", accountDTO))
 }
 
 func Register(c *gin.Context) {
@@ -92,7 +93,7 @@ func Register(c *gin.Context) {
 	}
 
 	if account.Name == "" || account.Password == "" {
-		c.JSON(200, util.NewReturnObject(400, "name or password is empty", nil))
+		c.JSON(200, util.NewReturnObject(1201, "name or password is empty", nil))
 		return
 	}
 
@@ -113,7 +114,7 @@ func Register(c *gin.Context) {
 		Name: account.Name,
 	}
 
-	c.JSON(200, util.NewReturnObject(200, "register success", accountDTO))
+	c.JSON(200, util.NewReturnObject(0, "register success", accountDTO))
 }
 
 func Logout(c *gin.Context) {
@@ -137,6 +138,50 @@ func Search(c *gin.Context) {
 		log.Println(err)
 	}
 
-	c.JSON(200, util.NewReturnObject(200, "success", dbResult))
+	c.JSON(200, util.NewReturnObject(0, "success", dbResult))
 
 }
+
+func SetAvatar(c *gin.Context) {
+	id := c.Param("id")
+	file, err := c.FormFile("upload")
+	if err != nil {
+		return
+	}
+
+	openedFile, err := file.Open()
+	if err != nil {
+		log.Println(err)
+	}
+
+	filePath := util.UploadImg(openedFile)
+
+	conn := util.Pool.Get()
+	defer conn.Close()
+
+	conn.Do("hset", id, "avatar", filePath)
+	fileDTO := model.FileDTO{
+		Path: filePath,
+	}
+	c.JSON(200, util.NewReturnObject(0, "Success", fileDTO))
+}
+
+// func File(c *gin.Context) {
+// 	// 获取文件头
+// 	file, err := c.FormFile("upload")
+// 	if err != nil {
+// 		return
+// 	}
+
+// 	openedFile, err := file.Open()
+// 	if err != nil {
+// 		log.Println(err)
+// 	}
+
+// 	filePath := util.UploadImg(openedFile)
+
+// 	fileDTO := model.FileDTO{
+// 		Path: filePath,
+// 	}
+// 	c.JSON(200, util.NewReturnObject(0, "Success", fileDTO))
+// }

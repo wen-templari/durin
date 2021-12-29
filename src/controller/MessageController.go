@@ -32,7 +32,7 @@ func Message(c *gin.Context) {
 		log.Println(err)
 	}
 	if i.(int64) == 0 {
-		c.JSON(200, util.NewReturnObject(400, "id is not exist", nil))
+		c.JSON(200, util.NewReturnObject(1401, "id is not exist", nil))
 		return
 	}
 	tokenGet, err := redis.String(conn.Do("get", "token:"+id))
@@ -49,12 +49,12 @@ func Message(c *gin.Context) {
 
 	tokenSend, _ := c.GetQuery("token")
 	if tokenSend == "" {
-		c.JSON(200, util.NewReturnObject(400, "token is not exist", nil))
+		c.JSON(200, util.NewReturnObject(1421, "token is not exist", nil))
 		return
 	}
 
 	if tokenSend != tokenGet {
-		c.JSON(200, util.NewReturnObject(400, "wrong token", nil))
+		c.JSON(200, util.NewReturnObject(1321, "wrong token", nil))
 		return
 	}
 

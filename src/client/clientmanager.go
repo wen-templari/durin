@@ -42,6 +42,7 @@ func (manager *ClientManager) Run() {
 			}
 		case message := <-manager.Send:
 			if manager.Clients[message.To] != nil {
+				log.Println("sending")
 				manager.Clients[message.To].send <- message
 			} else {
 				conn := util.Pool.Get()
