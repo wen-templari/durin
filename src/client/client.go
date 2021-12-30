@@ -49,7 +49,6 @@ func (c *Client) read() {
 		if err != nil {
 			log.Println(err)
 		} else {
-			// log.Println(message)
 			if message.To == "heartbeat" {
 				c.resetHeartbeatTimer = true
 			} else {
