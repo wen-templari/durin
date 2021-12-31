@@ -27,7 +27,7 @@ func Login(c *gin.Context) {
 	if err != nil {
 		log.Println(err)
 	}
-	if i.(int64) == 0 {
+	if i == nil || i.(int64) == 0 {
 		c.JSON(200, util.NewReturnObject(1401, "id is not exist", nil))
 		return
 	}

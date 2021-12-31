@@ -9,7 +9,7 @@ import (
 
 var (
 	Pool        *redis.Pool
-	redisServer = flag.String("redisServer", "1.117.145.67:6379", "")
+	redisServer = flag.String("redisServer", "127.0.0.1:6379", "")
 )
 
 func InitPool() {
