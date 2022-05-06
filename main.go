@@ -1,9 +1,9 @@
 package main
 
 import (
-	"durin/src/client"
-	"durin/src/controller"
-	"durin/src/util"
+	"durin/client"
+	"durin/controller"
+	"durin/util"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,6 +11,7 @@ import (
 func main() {
 
 	util.InitPool()
+	util.InitEnv()
 	go client.Manager.Run()
 	bindAddress := "localhost:8080"
 	r := gin.Default()

@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"durin/src/model"
-	"durin/src/util"
+	"durin/model"
+	"durin/util"
 	"log"
 
 	"github.com/gin-gonic/gin"

@@ -1,8 +1,8 @@
 package client
 
 import (
-	"durin/src/model"
-	"durin/src/util"
+	"durin/model"
+	"durin/util"
 	"encoding/json"
 	"log"
 )

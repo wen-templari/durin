@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"durin/src/client"
-	"durin/src/util"
+	"durin/client"
+	"durin/util"
 	"log"
 	"net/http"
 
@@ -42,11 +42,6 @@ func Message(c *gin.Context) {
 		return
 	}
 
-	// if n == c.Cookie("token") {
-	// 	c.JSON(200, util.NewReturnObject(400, "token is not exist", nil))
-	// 	return
-	// }
-
 	tokenSend, _ := c.GetQuery("token")
 	if tokenSend == "" {
 		c.JSON(200, util.NewReturnObject(1421, "token is not exist", nil))
@@ -62,6 +57,5 @@ func Message(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	// log.Println(wsConn)
 	client.SaveClient(id, wsConn)
 }

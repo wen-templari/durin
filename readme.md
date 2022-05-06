@@ -1,6 +1,24 @@
 # Durin
 
+## 相关项目
+[erebor](https://github.com/wen-templari/oakenshield)
 
+## 如何启动
+1. 安装依赖：Golang，Redis
+2. 在项目目录下安装 Golang 依赖
+   ```
+   go get
+   ```
+3. 在项目目录下创建`.env`文件，并填写相关配置
+   ```
+   ACCESS_KEY_ID=<>
+   ACCESS_KEY_SECRET=<>
+   REDIS_ADDRESS=<>
+   ```
+4. 启动服务
+   ```
+   go run main.go
+   ```
 
 ## Error Code
   + success:0

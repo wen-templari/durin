@@ -2,6 +2,7 @@ package util
 
 import (
 	"flag"
+	"os"
 	"time"
 
 	"github.com/gomodule/redigo/redis"
@@ -9,7 +10,7 @@ import (
 
 var (
 	Pool        *redis.Pool
-	redisServer = flag.String("redisServer", "127.0.0.1:6379", "")
+	redisServer = flag.String("redisServer", os.Getenv("REDIS_ADDRESS"), "")
 )
 
 func InitPool() {

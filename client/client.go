@@ -1,7 +1,7 @@
 package client
 
 import (
-	"durin/src/model"
+	"durin/model"
 	"encoding/json"
 	"log"
 	"sync"
@@ -32,7 +32,6 @@ func (c *Client) write() {
 		if err != nil {
 			break
 		}
-		// log.Println("Send message to ", c.Id)
 	}
 }
 

@@ -3,6 +3,7 @@ package util
 import (
 	"log"
 	"mime/multipart"
+	"os"
 	"strconv"
 	"time"
 
@@ -13,8 +14,8 @@ func UploadImg(source multipart.File) string {
 	timeUnix := time.Now().UnixMilli() //单位秒
 	target := strconv.FormatInt(timeUnix, 10)
 	endpoint := "http://oss-cn-hangzhou.aliyuncs.com"
-	accessKeyId := "***REMOVED***"
-	accessKeySecret := "***REMOVED***"
+	accessKeyId := os.Getenv("ACCESS_KEY_ID")
+	accessKeySecret := os.Getenv("ACCESS_KEY_SECRET")
 	bucketName := "erebor"
 	objectName := target
 	client, err := oss.New(endpoint, accessKeyId, accessKeySecret)
